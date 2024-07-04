@@ -1,8 +1,0 @@
-hello world
-hello there
-hello world there
-world of text generation
-text generation using rnn
-simple rnn model
-demonstrate text generation
-using rnn for text generation

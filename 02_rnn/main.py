@@ -1,5 +1,12 @@
 import gradio as gr
 from fastai.text.all import *
+import gradio as gr
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import Dataset, DataLoader
+import numpy as np
+import re
 import random
 
 # Sample corpus for training the RNN model
@@ -16,7 +23,7 @@ corpus = [
 
 
 # Load the text data
-dls = TextDataLoaders.from_folder("data/grimm", valid_pct=0.2, is_lm=True, seq_len=72)
+dls = TextDataLoaders.from_folder(".", valid_pct=0.2, is_lm=True, seq_len=72)
 
 # Build the RNN model using Fastai
 learn = language_model_learner(dls, AWD_LSTM, drop_mult=0.5)

@@ -5,6 +5,7 @@ from collections import Counter
 import nltk
 from nltk.util import ngrams
 import pandas as pd
+from fastai.text.all import *
 
 nltk.download("punkt")
 
@@ -85,6 +86,13 @@ def process_input(text, file_path, ngram_type):
     return generate_ngrams(text, ngram_type)
 
 
+def generate_text_with_rnn(seed_text, num_words):
+    data_lm = TextDataLoaders.from_folder("data", valid_pct=0.2, is_lm=True, seq_len=72)
+    learn = language_model_learner(data_lm, AWD_LSTM, drop_mult=0.5)
+    learn.fit_one_cycle(10, 1e-2)
+    learn.save_encoder("fine_tuned_enc")
+
+
 # Define the Gradio interface
 tab1 = gr.Interface(
     fn=process_input,
@@ -115,11 +123,24 @@ tab2 = gr.Interface(
     theme="gradio/monochrome",
 )
 
+tab3 = gr.Interface(
+    fn=generate_text_with_rnn,
+    inputs=[
+        gr.Textbox(lines=2, placeholder="Enter starting text", label="Starting Text"),
+        gr.Slider(
+            minimum=1, maximum=50, step=1, label="Number of Words to Generate", value=10
+        ),
+    ],
+    outputs="text",
+    title="RNN Text Generation with Fastai",
+    description="Input a starting text and the number of words to generate. The app uses a Fastai RNN model to generate the next sequence of words.",
+)
+
 # Define the tabbed layout
 app = gr.TabbedInterface(
-    [tab1, tab2],
+    [tab1, tab2, tab3],
     title="N-gram Model Demonstration",
-    tab_names=["N-gram Model", "Text Generation"],
+    tab_names=["N-gram Model", "Text Generation", "RNN Text Generation"],
     theme="gradio/monochrome",
 )
 
