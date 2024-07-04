@@ -1,3 +1,4 @@
+import random
 import re
 import gradio as gr
 from collections import Counter
@@ -8,17 +9,20 @@ import pandas as pd
 nltk.download("punkt")
 
 # Mapping of n-gram types to integers
-ngram_mapping = {"Unigram": 1, "Bigram": 2, "Trigram": 3}
+ngram_mapping = {"Unigram": 1, "Bigram": 2, "Trigram": 3, "4-gram": 4}
+ngram_freq = {}
+n = 0
 
 
 def preprocess_text(text):
-    # Remove non-letter characters and convert to lowercase
-    text = re.sub(r"[^a-zA-Z\s]", "", text)
+    # Remove non-letter characters except for German umlauts and convert to lowercase
+    text = re.sub(r"[^a-zA-ZäöüÄÖÜß\s]", "", text)
     text = text.lower()
     return text
 
 
 def generate_ngrams(text, ngram_type):
+    global n, ngram_freq
     # Preprocess the text
     text = preprocess_text(text)
 
@@ -49,6 +53,29 @@ def generate_ngrams(text, ngram_type):
     return ngram_df
 
 
+def generate_text(num_words):
+    global ngram_freq, n
+    if not ngram_freq:
+        return "N-gram data is not available. Please generate n-grams first."
+    # Start with a random n-gram
+    current_ngram = random.choice(list(ngram_freq.keys()))
+    generated_text = list(current_ngram)
+
+    for _ in range(num_words - n):
+        # Get the possible next words
+        next_words = [gram[-1] for gram in ngram_freq if gram[:-1] == current_ngram[1:]]
+
+        if next_words:
+            next_word = random.choice(next_words)
+            generated_text.append(next_word)
+            current_ngram = tuple(generated_text[-n:])
+        else:
+            break
+
+    text = " ".join(generated_text)
+    return text
+
+
 def process_input(text, file_path, ngram_type):
     if file_path is not None:
         with open(file_path, "r") as file:
@@ -59,22 +86,42 @@ def process_input(text, file_path, ngram_type):
 
 
 # Define the Gradio interface
-iface = gr.Interface(
+tab1 = gr.Interface(
     fn=process_input,
     inputs=[
         gr.Textbox(lines=5, label="Enter text"),
         gr.File(label="Upload a .txt file"),
         gr.Dropdown(
-            choices=["Unigram", "Bigram", "Trigram"],
+            choices=["Unigram", "Bigram", "Trigram", "4-gram"],
             label="Select N-gram Type",
             value="Unigram",
         ),
     ],
     outputs=gr.Dataframe(headers=["N-gram", "Frequency"], label="N-gram Frequencies"),
-    title="N-gram Model Demonstration",
+    title="Generate n-grams from Text",
     description="Input a sentence or paragraph, upload a .txt file, select the type of n-gram (unigram, bigram, trigram), and see the n-gram frequencies in a table.",
+)
+
+# Launch the app
+# Define the Gradio interface for Tab 2
+tab2 = gr.Interface(
+    fn=generate_text,
+    inputs=[
+        gr.Slider(minimum=10, maximum=100, step=1, label="Text Length"),
+    ],
+    outputs="text",
+    title="Text Generation Using N-grams",
+    description="Generate text based on the n-grams generated in Tab 1. Choose the length of the generated text.",
+    theme="gradio/monochrome",
+)
+
+# Define the tabbed layout
+app = gr.TabbedInterface(
+    [tab1, tab2],
+    title="N-gram Model Demonstration",
+    tab_names=["N-gram Model", "Text Generation"],
     theme="gradio/monochrome",
 )
 
 # Launch the app
-iface.launch()
+app.launch()
