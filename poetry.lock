@@ -2824,6 +2824,51 @@ intel-openmp = "==2021.*"
 tbb = "==2021.*"
 
 [[package]]
+name = "mlx"
+version = "0.15.2"
+description = "A framework for machine learning on Apple silicon."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "mlx-0.15.2-cp310-cp310-macosx_13_0_arm64.whl", hash = "sha256:420a12c730e9712bed9ad55b2c292dbbef4d332a400a2034c350f1d22227fd3f"},
+    {file = "mlx-0.15.2-cp310-cp310-macosx_14_0_arm64.whl", hash = "sha256:5fd77333d2efde679088aa1637c9b2ab327985bf6b18212b33bb9ae1a268d59f"},
+    {file = "mlx-0.15.2-cp311-cp311-macosx_13_0_arm64.whl", hash = "sha256:6552eb523fbecafd51e605168cdcec05e3076789b9ea48c928533ad170198b5f"},
+    {file = "mlx-0.15.2-cp311-cp311-macosx_14_0_arm64.whl", hash = "sha256:b28e3c8abed29d56143ba54f1b8435340d57cd50d50c293b50ff77b8e775e6e6"},
+    {file = "mlx-0.15.2-cp312-cp312-macosx_13_0_arm64.whl", hash = "sha256:c0022ff692af6b7ed992ae0555c2dcc78aec8b80f04267082c908572e1d98389"},
+    {file = "mlx-0.15.2-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:a591ed932b7d611a274db19a34d1641ac3110670a5d588820e17fb10a4b11099"},
+    {file = "mlx-0.15.2-cp38-cp38-macosx_13_0_arm64.whl", hash = "sha256:61f77124d345b2e63f8496603a81847d1675386bcd438c25934661b80de29fe1"},
+    {file = "mlx-0.15.2-cp38-cp38-macosx_14_0_arm64.whl", hash = "sha256:768f1ff624e17a818adecae03bf6490bd75c393e9b508b5c0871a28c31a06b79"},
+    {file = "mlx-0.15.2-cp39-cp39-macosx_13_0_arm64.whl", hash = "sha256:4f52d223fbe9628617550de4bde4b59350ed540a48fa288a7790b30404b5c43e"},
+    {file = "mlx-0.15.2-cp39-cp39-macosx_14_0_arm64.whl", hash = "sha256:98c3cbe690dfe4e71e609f9adc6c7005702b575d0e2eb8aee539bd027f46525f"},
+]
+
+[package.extras]
+dev = ["pre-commit"]
+testing = ["numpy", "torch"]
+
+[[package]]
+name = "mlx-lm"
+version = "0.15.0"
+description = "LLMs on Apple silicon with MLX and the Hugging Face Hub"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "mlx_lm-0.15.0-py3-none-any.whl", hash = "sha256:cbd304178db56e07139dbfccc4ee9a7c72c062829aef376b5c495af345e30f66"},
+    {file = "mlx_lm-0.15.0.tar.gz", hash = "sha256:c95c7a3efd2de26595488f27eab0beadc055e1e0c7be63b59a28cc492480cd63"},
+]
+
+[package.dependencies]
+jinja2 = "*"
+mlx = ">=0.14.1"
+numpy = "*"
+protobuf = "*"
+pyyaml = "*"
+transformers = ">=4.39.3"
+
+[package.extras]
+testing = ["datasets"]
+
+[[package]]
 name = "mpmath"
 version = "1.3.0"
 description = "Python library for arbitrary-precision floating-point arithmetic"
@@ -6827,4 +6872,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "3.10.12"
-content-hash = "14e804063cb2ef1a04aa7dfe6b4fa05b826f7385b38d26db2feb28f6c4a45285"
+content-hash = "bb7c1e58816b3a8e14d8b31ddf8172e3e498256ac70612d8390321285917bf36"
