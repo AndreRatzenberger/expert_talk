@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "expert-talk"
+version = "0.1.0"
+description = ""
+authors = ["Andre Ratzenberger <andre.ratzenberger@whiteduck.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.12"
+gradio = "^4.37.2"
+nltk = "^3.8.1"
+fastai = {extras = ["dev"], version = "^2.7.15"}
+numpy = "^2.0.0"
+torch = "^2.3.1"
+seaborn = "^0.13.2"
+install = "^1.3.5"
+wandb = "^0.17.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

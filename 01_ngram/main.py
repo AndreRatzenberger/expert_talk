@@ -91,6 +91,9 @@ def generate_text_with_rnn(seed_text, num_words):
     learn = language_model_learner(data_lm, AWD_LSTM, drop_mult=0.5)
     learn.fit_one_cycle(10, 1e-2)
     learn.save_encoder("fine_tuned_enc")
+    learn.load_encoder("fine_tuned_enc")
+    generated_text = learn.predict(seed_text, n_words=num_words)
+    return generated_text
 
 
 # Define the Gradio interface
